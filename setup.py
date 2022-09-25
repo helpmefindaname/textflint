@@ -16,7 +16,7 @@ print(pkgs)
 
 setup(
     name='textflint',
-    version='0.1.0',
+    version='0.1.1',
     url='https://github.com/textflint/textflint',
     description='Unified Multilingual Robustness Evaluation Toolkit '
                 'for Natural Language Processing',
