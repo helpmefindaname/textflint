@@ -91,17 +91,20 @@ class ReverseNeg(Transformation):
         Dependency Parsing
         """
         sentence = ' '.join(x for x in tokens)
-        sentence_tokens = self.processor.sentence_tokenize(sentence)
+        sentence_tokens = self.processor.sentence_tokenize(sentence)[0]
         root_id_list = []
 
         parse_tokens = self.processor.get_dep_parser(
-            sentence_tokens[0], split_by_space=split_by_space)
+            sentence_tokens, split_by_space=split_by_space)
 
-        for i, token in enumerate(parse_tokens):
-            if len(token) < 4:
-                continue
-            if token[3] in ['cop', 'ROOT', 'aux']:
-                root_id_list.append(i)
+        char_idx = 0
+
+        for text, tag, head_i, dep in parse_tokens:
+            char_idx += sentence_tokens[char_idx:].index(text)
+            char_idx += len(text)
+            word_idx = sentence_tokens[:char_idx].count(" ")
+            if dep in ['cop', 'ROOT', 'aux']:
+                root_id_list.append(word_idx)
 
         return root_id_list
 
